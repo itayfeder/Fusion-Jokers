@@ -29,7 +29,7 @@
 
 **Fusion Jokers** is a mod that allows players to combine jokers into special powerful new **Fusion Jokers**!
 
-When you a fusable joker, pressing on it will show a **"fuse" button**. When you have the correct jokers, and enough money, you can combine the jokers into a powerful **Fusion**! 
+When you have a fusable joker, pressing on it will show a **"fuse" button**. When you have the correct jokers, and enough money, you can combine the jokers into a powerful **Fusion**! 
 
 <img width=500px src="art/jokers_tab.png?raw=true" alt="Showcase of jokers tab 5"></a>
 
