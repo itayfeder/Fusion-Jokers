@@ -69,6 +69,10 @@ FusionJokers.fusions = {
 		{ name = "j_smiley", carry_stat = nil, extra_stat = false }
 	}, result_joker = "j_uncanny_face", cost = 8 },
 	{ jokers = {
+		{ name = "j_ride_the_bus", carry_stat = nil, extra_stat = false },
+		{ name = "j_drivers_license", carry_stat = nil, extra_stat = false }
+	}, result_joker = "j_commercial_driver", cost = 8 },
+	{ jokers = {
 		{ name = "j_hiker", carry_stat = nil, extra_stat = false },
 		{ name = "j_dusk", carry_stat = nil, extra_stat = false }
 	}, result_joker = "j_camping_trip", cost = 10 },
@@ -373,21 +377,38 @@ end
 local new_roundref = new_round
 function new_round()
 	new_roundref()
-	local chaos = find_joker('Collectible Chaos Card')
-	G.GAME.current_round.free_rerolls = G.GAME.current_round.free_rerolls or 0
-    G.GAME.current_round.free_rerolls = G.GAME.current_round.free_rerolls + #chaos
-	calculate_reroll_cost(true)
+	G.E_MANAGER:add_event(Event({
+		trigger = 'after',
+		delay = 0.1,
+		func = function()
+			local chaos = find_joker('Collectible Chaos Card')
+			G.GAME.current_round.free_rerolls = G.GAME.current_round.free_rerolls or 0
+			G.GAME.current_round.free_rerolls = G.GAME.current_round.free_rerolls + #chaos
+			calculate_reroll_cost(true)
+		return true end
+	}))
 end
+
+-- local calculate_reroll_costref = calculate_reroll_cost
+-- function calculate_reroll_cost(skip_increment)
+-- 	local chaos = find_joker('Collectible Chaos Card')
+-- 	sendDebugMessage("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+-- 	sendDebugMessage(inspect(chaos))
+-- 	G.GAME.current_round.free_rerolls = G.GAME.current_round.free_rerolls or 0
+--     G.GAME.current_round.free_rerolls = G.GAME.current_round.free_rerolls + #chaos
+-- 	calculate_reroll_costref(skip_increment)
+-- end
 
 
 local calculate_dollar_bonusref = Card.calculate_dollar_bonus
 function Card:calculate_dollar_bonus()
-	calculate_dollar_bonusref(self)
+	local retval = calculate_dollar_bonusref(self)
 	if self.ability.set == "Joker" then
         if self.ability.name == 'Golden Egg' then
             return self.ability.extra.dollars
         end
 	end
+	return retval
 end
 
 -- local shatterref = Card.shatter
@@ -472,7 +493,7 @@ function SMODS.INIT.FusionJokers()
 	}
   
 	local heart_paladin = SMODS.Joker:new("Heart Paladin", "heart_paladin", {extra = {
-		odds = 3, Xmult = 1.5, joker1 = "j_lusty_joker", joker2 = "j_bloodstone"
+		odds = 2, Xmult = 1.5, joker1 = "j_lusty_joker", joker2 = "j_bloodstone"
 	}}, { x = 0, y = 0 }, heart_paladin_def, 5, 12, true, false, true, true)
 	SMODS.Sprite:new("j_heart_paladin", mod_obj.path, "j_heart_paladin.png", 71, 95, "asset_atli"):register();
 	heart_paladin:register()
@@ -628,15 +649,16 @@ function SMODS.INIT.FusionJokers()
 	local dynamic_duo_def = {
 		name = "Dynamic Duo",
 		text = {
-			"Played {C:attention}number{} cards give {C:mult}+#1#{} Mult ",
-			"and {C:chips}+#2#{} Chips when scored.",
+			"Played {C:attention}numbered{} cards ",
+			"and {C:attention}Aces{} give {C:mult}+#1#{} Mult ",
+			"and {C:chips}+#2#{} Chips when scored",
 			"{C:inactive}(#3# + #4#)"
 			
 		}
 	}
 
 	local dynamic_duo = SMODS.Joker:new("Dynamic Duo", "dynamic_duo", {extra = {
-		mult = 4, chips = 30, joker1 = "j_even_steven", joker2 = "j_odd_todd"
+		mult = 4, chips = 31, joker1 = "j_even_steven", joker2 = "j_odd_todd"
 	}}, { x = 0, y = 0 }, dynamic_duo_def, 5, 8, true, false, true, true)
 	SMODS.Sprite:new("j_dynamic_duo", mod_obj.path, "j_dynamic_duo.png", 71, 95, "asset_atli"):register();
 	dynamic_duo:register()
