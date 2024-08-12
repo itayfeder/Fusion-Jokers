@@ -382,12 +382,12 @@ end
 
 local calculate_dollar_bonusref = Card.calculate_dollar_bonus
 function Card:calculate_dollar_bonus()
-	calculate_dollar_bonusref(self)
 	if self.ability.set == "Joker" then
         if self.ability.name == 'Golden Egg' then
             return self.ability.extra.dollars
         end
 	end
+	return calculate_dollar_bonusref(self)
 end
 
 -- local shatterref = Card.shatter
