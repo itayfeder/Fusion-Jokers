@@ -671,7 +671,8 @@ function SMODS.INIT.FusionJokers()
 
 	function SMODS.Jokers.j_dynamic_duo.calculate(card, context)
 		if context.individual and context.cardarea == G.play and
-		not context.other_card:is_face() then
+        	context.other_card:get_id() > 0 and -- Stone cards have a random massively negative id
+		(context.other_card:get_id() <= 10 or context.other_card:get_id() == 14) then
 			return {
 				mult = card.ability.extra.mult,
 				chips = card.ability.extra.chips,
