@@ -96,7 +96,7 @@ end
 
 function Card:can_fuse_card()
 	for _, fusion in ipairs(FusionJokers.fusions) do
-		if G.GAME.dollars >= fusion.cost then
+		if G.GAME.dollars.value ~= nil and G.GAME.dollars.value >= fusion.cost then
 			local found_me = false
 			local all_jokers = true
 			for __, joker in ipairs(fusion.jokers) do
