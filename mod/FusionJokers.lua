@@ -96,7 +96,7 @@ end
 
 function Card:can_fuse_card()
 	for _, fusion in ipairs(FusionJokers.fusions) do
-		if G.GAME.dollars >= fusion.cost then
+		if G.GAME.dollars["array"][1] ~= nil and G.GAME.dollars["array"][1] >= fusion.cost then
 			local found_me = false
 			local all_jokers = true
 			for __, joker in ipairs(fusion.jokers) do
@@ -111,7 +111,7 @@ function Card:can_fuse_card()
 				return true
 			end
 		end
-	end 
+	end
     return false
 end
 
@@ -271,7 +271,7 @@ function G.UIDEF.card_h_popup(card)
 	(not card.config.center.discovered and ((card.area ~= G.jokers and card.area ~= G.consumeables and card.area) or not card.area)) -- undiscovered card
 	then return retval end
 
-	if card.config.center.rarity == 5 then
+	if card.config.center.rarity == 4 then
 		retval.nodes[1].nodes[1].nodes[1].nodes[3].nodes[1].nodes[1].nodes[2].config.object:remove()
 		retval.nodes[1].nodes[1].nodes[1].nodes[3].nodes[1] = create_badge(localize('k_fusion'), loc_colour("fusion", nil), nil, 1.2)
 	end
@@ -420,7 +420,7 @@ function SMODS.INIT.FusionJokers()
 	table.insert(G.C.RARITY, HEX("F7D762"))
 
 	loc_colour("mult", nil)
-    G.ARGS.LOC_COLOURS["fusion"] = G.C.RARITY[5]
+    G.ARGS.LOC_COLOURS["fusion"] = G.C.RARITY[4]
 
 	
 
@@ -436,7 +436,7 @@ function SMODS.INIT.FusionJokers()
 
 	local diamond_bard = SMODS.Joker:new("Diamond Bard", "diamond_bard", {extra = {
 		money_threshold = 20, mult = 4, money = 1, joker1 = "j_greedy_joker", joker2 = "j_rough_gem"
-	}}, { x = 0, y = 0 }, diamond_bard_def, 5, 12, true, false, true, true)
+	}}, { x = 0, y = 0 }, diamond_bard_def, 4, 12, true, false, true, true)
 	SMODS.Sprite:new("j_diamond_bard", mod_obj.path, "j_diamond_bard.png", 71, 95, "asset_atli"):register();
 	diamond_bard:register()
 
@@ -453,7 +453,7 @@ function SMODS.INIT.FusionJokers()
 			G.E_MANAGER:add_event(Event({func = (function() G.GAME.dollar_buffer = 0; return true end)}))
 			return {
 				dollars = card.ability.extra.money,
-				mult = card.ability.extra.mult * (1 + math.floor(G.GAME.dollars / card.ability.extra.money_threshold)),
+				mult = card.ability.extra.mult * (1 + math.floor(G.GAME.dollars["array"][0] / card.ability.extra.money_threshold)),
 				card = card
 			}
 		end
@@ -473,7 +473,7 @@ function SMODS.INIT.FusionJokers()
   
 	local heart_paladin = SMODS.Joker:new("Heart Paladin", "heart_paladin", {extra = {
 		odds = 3, Xmult = 1.5, joker1 = "j_lusty_joker", joker2 = "j_bloodstone"
-	}}, { x = 0, y = 0 }, heart_paladin_def, 5, 12, true, false, true, true)
+	}}, { x = 0, y = 0 }, heart_paladin_def, 4, 12, true, false, true, true)
 	SMODS.Sprite:new("j_heart_paladin", mod_obj.path, "j_heart_paladin.png", 71, 95, "asset_atli"):register();
 	heart_paladin:register()
 
@@ -518,7 +518,7 @@ function SMODS.INIT.FusionJokers()
 
 	local spade_archer = SMODS.Joker:new("Spade Archer", "spade_archer", {extra = {
 		chips = 50, chip_mod = 10, joker1 = "j_wrathful_joker", joker2 = "j_arrowhead"
-	}}, { x = 0, y = 0 }, spade_archer_def, 5, 12, true, false, true, true)
+	}}, { x = 0, y = 0 }, spade_archer_def, 4, 12, true, false, true, true)
 	SMODS.Sprite:new("j_spade_archer", mod_obj.path, "j_spade_archer.png", 71, 95, "asset_atli"):register();
 	spade_archer:register()
 
@@ -568,7 +568,7 @@ function SMODS.INIT.FusionJokers()
 
 	local club_wizard = SMODS.Joker:new("Club Wizard", "club_wizard", {extra = {
 		mult = 24, joker1 = "j_gluttenous_joker", joker2 = "j_onyx_agate"
-	}}, { x = 0, y = 0 }, club_wizard_def, 5, 12, true, false, true, true)
+	}}, { x = 0, y = 0 }, club_wizard_def, 4, 12, true, false, true, true)
 	SMODS.Sprite:new("j_club_wizard", mod_obj.path, "j_club_wizard.png", 71, 95, "asset_atli"):register();
 	club_wizard:register()
 
@@ -603,7 +603,7 @@ function SMODS.INIT.FusionJokers()
 	
 	local big_bang = SMODS.Joker:new("Big Bang", "big_bang", {extra = {
 		Xmult = 0.1, joker1 = "j_supernova", joker2 = "j_constellation"
-	}}, { x = 0, y = 0 }, big_bang_def, 5, 11, true, false, true, true)
+	}}, { x = 0, y = 0 }, big_bang_def, 4, 11, true, false, true, true)
 	SMODS.Sprite:new("j_big_bang", mod_obj.path, "j_big_bang.png", 71, 95, "asset_atli"):register();
 	big_bang:register()
 
@@ -637,7 +637,7 @@ function SMODS.INIT.FusionJokers()
 
 	local dynamic_duo = SMODS.Joker:new("Dynamic Duo", "dynamic_duo", {extra = {
 		mult = 4, chips = 30, joker1 = "j_even_steven", joker2 = "j_odd_todd"
-	}}, { x = 0, y = 0 }, dynamic_duo_def, 5, 8, true, false, true, true)
+	}}, { x = 0, y = 0 }, dynamic_duo_def, 4, 8, true, false, true, true)
 	SMODS.Sprite:new("j_dynamic_duo", mod_obj.path, "j_dynamic_duo.png", 71, 95, "asset_atli"):register();
 	dynamic_duo:register()
 
@@ -671,7 +671,7 @@ function SMODS.INIT.FusionJokers()
 
 	local collectible_chaos_card = SMODS.Joker:new("Collectible Chaos Card", "collectible_chaos_card", {extra = {
 		per_reroll = 2, free = 1, joker1 = "j_chaos", joker2 = "j_flash"
-	}, mult = 0}, { x = 0, y = 0 }, collectible_chaos_card_def, 5, 9, true, false, true, true)
+	}, mult = 0}, { x = 0, y = 0 }, collectible_chaos_card_def, 4, 9, true, false, true, true)
 	SMODS.Sprite:new("j_collectible_chaos_card", mod_obj.path, "j_collectible_chaos_card.png", 71, 95, "asset_atli"):register();
 	collectible_chaos_card:register()
 
@@ -723,7 +723,7 @@ function SMODS.INIT.FusionJokers()
 
 	local flip_flop = SMODS.Joker:new("Flip-Flop", "flip_flop", {extra = {
 		hands = 2, discards = 2, mult = 8, chips = 50, side = "mult", joker1 = "j_juggler", joker2 = "j_drunkard"
-	}}, { x = 0, y = 0 }, flip_flop_hand_def, 5, 9, true, false, false, true)
+	}}, { x = 0, y = 0 }, flip_flop_hand_def, 4, 9, true, false, false, true)
 	SMODS.Sprite:new("j_flip_flop", mod_obj.path, "j_flip_flop.png", 71, 95, "asset_atli"):register();
 	SMODS.Sprite:new("j_flop_flip", mod_obj.path, "j_flop_flip.png", 71, 95, "asset_atli"):register();
 	flip_flop:register()
@@ -821,7 +821,7 @@ function SMODS.INIT.FusionJokers()
 
 	local royal_decree = SMODS.Joker:new("Royal Decree", "royal_decree", {extra = {
 		dollars = 2, joker1 = "j_business", joker2 = "j_reserved_parking"
-	}, mult = 0}, { x = 0, y = 0 }, royal_decree_def, 5, 10, true, false, true, true)
+	}, mult = 0}, { x = 0, y = 0 }, royal_decree_def, 4, 10, true, false, true, true)
 	SMODS.Sprite:new("j_royal_decree", mod_obj.path, "j_royal_decree.png", 71, 95, "asset_atli"):register();
 	royal_decree:register()
 
@@ -868,7 +868,7 @@ function SMODS.INIT.FusionJokers()
 
 	local dementia_joker = SMODS.Joker:new("Dementia Joker", "dementia_joker", {extra = {
 		mult = 3, odds = 3, joker1 = "j_abstract", joker2 = "j_riff_raff"
-	}, mult = 0}, { x = 0, y = 0 }, dementia_joker_def, 5, 8, true, false, true, true)
+	}, mult = 0}, { x = 0, y = 0 }, dementia_joker_def, 4, 8, true, false, true, true)
 	SMODS.Sprite:new("j_dementia_joker", mod_obj.path, "j_dementia_joker.png", 71, 95, "asset_atli"):register();
 	dementia_joker:register()
 
@@ -918,10 +918,10 @@ function SMODS.INIT.FusionJokers()
 			
 		}
 	}
-
+	
 	local golden_egg = SMODS.Joker:new("Golden Egg", "golden_egg", {extra = {
 		dollars = 4, joker1 = "j_egg", joker2 = "j_golden"
-	}, mult = 0}, { x = 0, y = 0 }, golden_egg_def, 5, 10, true, false, false, true)
+	}, mult = 0}, { x = 0, y = 0 }, golden_egg_def, 4, 10, true, false, false, true)
 	SMODS.Sprite:new("j_golden_egg", mod_obj.path, "j_golden_egg.png", 71, 95, "asset_atli"):register();
 	golden_egg:register()
 
@@ -958,7 +958,7 @@ function SMODS.INIT.FusionJokers()
 
 	local flag_bearer = SMODS.Joker:new("Flag Bearer", "flag_bearer", {extra = {
 		hand_add = 1, discard_sub = 1, joker1 = "j_banner", joker2 = "j_green_joker"
-	}, mult = 0}, { x = 0, y = 0 }, flag_bearer_def, 5, 9, true, false, false, true)
+	}, mult = 0}, { x = 0, y = 0 }, flag_bearer_def, 4, 9, true, false, false, true)
 	SMODS.Sprite:new("j_flag_bearer", mod_obj.path, "j_flag_bearer.png", 71, 95, "asset_atli"):register();
 	flag_bearer:register()
 
@@ -1014,7 +1014,7 @@ function SMODS.INIT.FusionJokers()
 
 	local uncanny_face = SMODS.Joker:new("Uncanny Face", "uncanny_face", {extra = {
 		chips = 15, mult = 2, joker1 = "j_scary_face", joker2 = "j_smiley"
-	}}, { x = 0, y = 0 }, uncanny_face_def, 5, 8, true, false, true, true)
+	}}, { x = 0, y = 0 }, uncanny_face_def, 4, 8, true, false, true, true)
 	SMODS.Sprite:new("j_uncanny_face", mod_obj.path, "j_uncanny_face.png", 71, 95, "asset_atli"):register();
 	uncanny_face:register()
 
@@ -1054,7 +1054,7 @@ function SMODS.INIT.FusionJokers()
 
 	local commercial_driver = SMODS.Joker:new("Commercial Driver", "commercial_driver", {extra = {
 		bonus = 0.25, total = 1, joker1 = "j_ride_the_bus", joker2 = "j_drivers_license"
-	}}, { x = 0, y = 0 }, commercial_driver_def, 5, 8, true, false, true, true)
+	}}, { x = 0, y = 0 }, commercial_driver_def, 4, 8, true, false, true, true)
 	SMODS.Sprite:new("j_commercial_driver", mod_obj.path, "j_commercial_driver.png", 71, 95, "asset_atli"):register();
 	commercial_driver:register()
 
@@ -1106,7 +1106,7 @@ function SMODS.INIT.FusionJokers()
 
 	local camping_trip = SMODS.Joker:new("Camping Trip", "camping_trip", {extra = {
 		bonus_base = 5, bonus_final = 10, joker1 = "j_hiker", joker2 = "j_dusk"
-	}}, { x = 0, y = 0 }, camping_trip_def, 5, 10, true, false, true, true)
+	}}, { x = 0, y = 0 }, camping_trip_def, 4, 10, true, false, true, true)
 	SMODS.Sprite:new("j_camping_trip", mod_obj.path, "j_camping_trip.png", 71, 95, "asset_atli"):register();
 	camping_trip:register()
 
@@ -1161,7 +1161,7 @@ function SMODS.INIT.FusionJokers()
 	
 		local star_oracle = SMODS.Joker:new("Star Oracle", "star_oracle", {extra = {
 			odds = 10, slots = 2, joker1 = "j_envious_joker", joker2 = "j_star_ruby"
-		}}, { x = 0, y = 0 }, star_oracle_def, 5, 12, true, false, true, true)
+		}}, { x = 0, y = 0 }, star_oracle_def, 4, 12, true, false, true, true)
 		SMODS.Sprite:new("j_star_oracle", mod_obj.path, "j_star_oracle.png", 71, 95, "asset_atli"):register();
 		star_oracle:register()
 	
@@ -1210,7 +1210,7 @@ function SMODS.INIT.FusionJokers()
 
 		local moon_marauder = SMODS.Joker:new("Moon Marauder", "moon_marauder", {extra = {
 			odds = 3, joker1 = "j_slothful_joker", joker2 = "j_rainbow_moonstone"
-		}}, { x = 0, y = 0 }, moon_marauder_def, 5, 12, true, false, true, true)
+		}}, { x = 0, y = 0 }, moon_marauder_def, 4, 12, true, false, true, true)
 		SMODS.Sprite:new("j_moon_marauder", mod_obj.path, "j_moon_marauder.png", 71, 95, "asset_atli"):register();
 		moon_marauder:register()
 
